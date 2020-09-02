@@ -31,7 +31,7 @@ ____________
 
 1. Opening in NetBeans
 
-![](https://github.com/alejovasquero/ARSW---LAB3/blob/master/img/project.JPG)
+![](img/project.JPG)
 
 2. Spring Configuration
   ```
@@ -73,7 +73,7 @@ ____________
 
 Testing EnglishSpeakTeacher on instance of GrammarChecker
 
-![](https://github.com/alejovasquero/ARSW---LAB3/blob/master/img/english.JPG)
+![](img/english.JPG)
 
 
 ### PART 2
@@ -89,7 +89,7 @@ SpanishSpeakChecker
 
 Testing SpanishSpeakTeacher on instance of GrammarChecker
 
-![](https://github.com/alejovasquero/ARSW---LAB3/blob/master/img/espaniol.JPG)
+![](img/espaniol.JPG)
 
 ## Contribuciones
 
