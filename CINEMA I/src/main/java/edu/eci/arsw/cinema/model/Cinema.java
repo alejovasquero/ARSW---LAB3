@@ -5,6 +5,10 @@
  */
 package edu.eci.arsw.cinema.model;
 
+import edu.eci.arsw.cinema.services.CinemaServices;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import java.util.List;
 
 /**
@@ -37,5 +41,11 @@ public class Cinema {
 
     public void setSchedule(List<CinemaFunction> functions) {
         this.functions = functions;
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
+        CinemaServices cs=ac.getBean(CinemaServices.class);
+        System.out.println(cs.getCps());
     }
 }

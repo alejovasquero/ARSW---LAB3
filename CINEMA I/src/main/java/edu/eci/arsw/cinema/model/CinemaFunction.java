@@ -34,7 +34,7 @@ public class CinemaFunction {
     }
     
     public void buyTicket(int row,int col) throws CinemaException{
-        if (seats.get(row).get(col).equals(true)){
+        if (row < seats.size() && col <seats.get(row).size() && seats.get(row).get(col).equals(true)){
             seats.get(row).set(col,Boolean.FALSE);
         }
         else{
@@ -61,8 +61,15 @@ public class CinemaFunction {
     public void setDate(String date) {
         this.date = date;
     }
-    
-    
-    
-    
+
+
+    public int getAvailableSeats() {
+        int ans = 0;
+        for(List<Boolean> rows: seats){
+            for (Boolean cols: rows){
+                if (cols) ans++;
+            }
+        }
+        return ans;
+    }
 }

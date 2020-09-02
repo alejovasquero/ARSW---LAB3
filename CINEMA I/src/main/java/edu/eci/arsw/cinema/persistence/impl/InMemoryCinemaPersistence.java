@@ -11,15 +11,20 @@ import edu.eci.arsw.cinema.model.Movie;
 import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author cristian
  */
+@Repository
 public class InMemoryCinemaPersistence implements CinemaPersitence{
     
     private final Map<String,Cinema> cinemas=new HashMap<>();
@@ -38,12 +43,30 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
 
     @Override
     public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        try {
+            for (CinemaFunction cf : getCinema(cinema).getFunctions()) {
+                if (cf.getMovie().getName().equals(movieName) && cf.getDate().equals(date)) {
+                    cf.buyTicket(row, col);
+                }
+            }
+        } catch(CinemaPersistenceException e){
+            throw new CinemaException("Error consultando el cinema", e);
+        } catch (NullPointerException e){
+            throw new CinemaException("La sesión de esta película no existe", e);
+        }
     }
 
     @Override
     public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        List<CinemaFunction> ans = null;
+        if(cinemas.containsKey(cinema)){
+            ans =  cinemas.get(cinema).getFunctions().stream().filter(
+                    p -> p.getDate().equals(date)
+            ).collect(Collectors.toList());
+        } else {
+            ans= null;
+        }
+        return ans;
     }
 
     @Override
