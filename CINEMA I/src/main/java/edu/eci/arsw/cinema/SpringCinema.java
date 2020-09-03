@@ -15,47 +15,77 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringCinema {
 
+    public static void printCinemas(CinemaServices cs) {
+        for (Cinema cine : cs.getAllCinemas()) {
+            System.out.println(cine.getName());
+        }
+    }
+
+    public static void printFuntions(CinemaServices cs) {
+        for(Cinema cine : cs.getAllCinemas()){
+            for(CinemaFunction function : cine.getFunctions()){
+                System.out.println("Funcion: "+function.getMovie().getName()+" con " + function.getAvailableSeats() + " asientos disponibles." );
+            }
+        }
+    }
+
+    public static void printFuntionsByCinema(CinemaServices cs, String cinema) {
+        for(Cinema cine : cs.getAllCinemas()){
+            if(cine.getName() == cinema){
+                System.out.println(cinema);
+                for(CinemaFunction function : cine.getFunctions()){
+                    System.out.println("Funcion: "+function.getMovie().getName()+" con " + function.getAvailableSeats() + " asientos disponibles." );
+                }
+            }
+        }
+    }
+
+    public static void printSeatsAvailabilityByFunction(CinemaServices cs, String funct,String cinema) {
+        for(Cinema cine : cs.getAllCinemas()){
+            if(cine.getName() == cinema ){
+                for(CinemaFunction function : cine.getFunctions()){
+                    if(function.getMovie().getName() == funct ){
+                        System.out.println(funct);
+                        System.out.println("Quedan: "+function.getAvailableSeats()+" asientos");
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws CinemaPersistenceException, CinemaException {
-        ApplicationContext ac=new ClassPathXmlApplicationContext("applicationContext.xml");
-        CinemaServices cs=ac.getBean(CinemaServices.class);
+        ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+        CinemaServices cs = ac.getBean(CinemaServices.class);
 
         String functionDate1 = "2018-12-18 15:30";
         String functionDate2 = "2018-12-25 15:30";
         String functionDate3 = "2018-12-11 15:30";
 
-        List<CinemaFunction> functions= new ArrayList<>();
+        List<CinemaFunction> functions = new ArrayList<>();
 
-        //Creando Funciones
-        CinemaFunction funct1 = new CinemaFunction(new Movie("SpiderMan Homecoming","Action"),functionDate1);
-        CinemaFunction funct2 = new CinemaFunction(new Movie("Anabelle","Terror"),functionDate2);
-        CinemaFunction funct3 = new CinemaFunction(new Movie("Joker","Drama"),functionDate3);
+        // Creando Funciones
+        CinemaFunction funct1 = new CinemaFunction(new Movie("SpiderMan Homecoming", "Action"), functionDate1);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("Anabelle", "Terror"), functionDate2);
+        CinemaFunction funct3 = new CinemaFunction(new Movie("Joker", "Drama"), functionDate3);
 
         functions.add(funct1);
         functions.add(funct2);
         functions.add(funct3);
 
-        //Registrando Cine
-        Cinema c=new Cinema("Cine Colombia",functions);
+        // Registrando Cine
+        Cinema c = new Cinema("Cine Colombia", functions);
         cs.addNewCinema(c);
 
-        //Consultando Cines
-        for(Cinema cine : cs.getAllCinemas()){
-            System.out.println(cine.getName());
-        }
+        // Consultando Cines
+        printCinemas(cs);
 
         //Consultando Funciones
-        for(Cinema cine : cs.getAllCinemas()){
-            System.out.println(cine.getFunctions());
-        }
+        printFuntions(cs);
 
         //Consultando Funciones por Cine
         String reqCine="Cine Colombia";
-        for(Cinema cine : cs.getAllCinemas()){
-            if(cine.getName() == reqCine){
-                System.out.println(cine.getFunctions().toString());
-            }
-        }
-
+        printFuntionsByCinema(cs, reqCine);
+        
         //Comprando entradas
         cs.buyTicket(1, 5, reqCine, functionDate1, "SpiderMan Homecoming");
         cs.buyTicket(2, 5, reqCine, functionDate3, "Joker");
@@ -63,15 +93,8 @@ public class SpringCinema {
 
         //Consultando Asientos
         String reqFunction="Joker";
-        for(Cinema cine : cs.getAllCinemas()){
-            if(cine.getName() == reqCine ){
-                for(CinemaFunction function : cine.getFunctions()){
-                    if(function.getMovie().getName() == reqFunction ){
-                        System.out.println(function.getAvailableSeats());
-                    }
-                }
-            }
-        }
+        printSeatsAvailabilityByFunction(cs, reqFunction, reqCine);
+        
 
     }
 }
