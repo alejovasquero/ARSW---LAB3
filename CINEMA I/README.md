@@ -17,7 +17,7 @@ mvn compile
 Para ejecutar el programa.
 
   ```console
-mvn exec:java -Dexec.mainClass="edu.eci.cinema.SpringCinema"
+mvn exec:java -Dexec.mainClass="edu.eci.arsw.cinema.SpringCinema"
    ```
 
 Para ejecutar las pruebas

@@ -34,17 +34,12 @@ public class CinemaServices {
     @Autowired
     CinemaFilter filter;
 
-<<<<<<< HEAD
-    public void addNewCinema(Cinema c) throws CinemaPersistenceException {
-        cps.saveCinema(c);
-=======
     public void addNewCinema(Cinema c) throws CinemaException {
         try {
             cps.saveCinema(c);
         } catch (CinemaPersistenceException e) {
             throw new CinemaException("Error al insertar el nuevo cinema");
         }
->>>>>>> a182a80b02913b85863ea55bc0a69f4bda82e84c
     }
     
     public Set<Cinema> getAllCinemas(){
