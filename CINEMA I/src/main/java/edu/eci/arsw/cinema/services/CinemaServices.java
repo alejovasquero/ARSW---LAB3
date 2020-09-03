@@ -18,6 +18,7 @@ import java.util.Set;
 
 import edu.eci.arsw.cinema.services.filters.CinemaFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
  * @author cristian
  */
 @Service
+@Scope("prototype")
 public class CinemaServices {
     @Autowired
     CinemaPersitence cps=null;
@@ -32,8 +34,12 @@ public class CinemaServices {
     @Autowired
     CinemaFilter filter;
 
-    public void addNewCinema(Cinema c){
-        
+    public void addNewCinema(Cinema c) throws CinemaException {
+        try {
+            cps.saveCinema(c);
+        } catch (CinemaPersistenceException e) {
+            throw new CinemaException("Error al insertar el nuevo cinema");
+        }
     }
     
     public Set<Cinema> getAllCinemas(){
@@ -73,7 +79,7 @@ public class CinemaServices {
     }
 
 
-    public <E> List<Movie> getFilteredMovies(String cinema, String date, E criteria){
+    public <E> List<Movie> getFilteredMovies(String cinema, String date, E criteria) throws CinemaException{
         ArrayList<CinemaFunction> ava = new ArrayList<CinemaFunction>();
         try {
             for(CinemaFunction cf: getCinemaByName(cinema).getFunctions()){
@@ -81,9 +87,16 @@ public class CinemaServices {
                     ava.add(cf);
                 }
             }
-        } catch (CinemaException | NullPointerException e) {
-            //e.printStackTrace();
+        } catch ( NullPointerException e) {
+            throw new CinemaException("El Cinema especificado no existe", e);
         }
         return filter.apply(ava, criteria);
+    }
+
+    public void setFilter(CinemaFilter c){
+        filter = c;
+    }
+    public CinemaFilter getFilter(){
+        return filter;
     }
 }
