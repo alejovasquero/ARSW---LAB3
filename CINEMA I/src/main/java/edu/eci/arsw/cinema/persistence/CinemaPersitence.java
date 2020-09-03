@@ -8,6 +8,7 @@ package edu.eci.arsw.cinema.persistence;
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -50,5 +51,11 @@ public interface CinemaPersitence {
      * @throws  CinemaPersistenceException if there is no such cinema
      */
     public Cinema getCinema(String name) throws CinemaPersistenceException;
+
+    /**
+     * Return all cinemas
+     * @return Cinemas
+     */
+	public Set<Cinema> getCinemas();
     
 }

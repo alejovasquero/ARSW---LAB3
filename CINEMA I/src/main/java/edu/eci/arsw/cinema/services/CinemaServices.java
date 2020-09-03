@@ -32,12 +32,12 @@ public class CinemaServices {
     @Autowired
     CinemaFilter filter;
 
-    public void addNewCinema(Cinema c){
-        
+    public void addNewCinema(Cinema c) throws CinemaPersistenceException {
+        cps.saveCinema(c);
     }
     
     public Set<Cinema> getAllCinemas(){
-        return null;
+        return cps.getCinemas();
     }
     
     /**
